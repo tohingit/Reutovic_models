@@ -1,24 +1,140 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic Site</title>
+    <title>Model Agency</title>
     <style>
-        .buy-button {
-            background-color: orange;
-            color: white;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        .city-selection, .model-catalog {
+            display: none;
+            text-align: center;
+        }
+
+        .city-selection.active, .model-catalog.active {
+            display: block;
+        }
+
+        .city-selection h1 {
+            margin-bottom: 20px;
+        }
+
+        .cities {
+            display: flex;
+            gap: 15px;
+        }
+
+        .city-button {
             padding: 10px 20px;
-            border: none;
+            font-size: 18px;
             cursor: pointer;
-            font-size: 16px;
+            border: 2px solid #000;
+            background-color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .city-button:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .model {
+            position: relative;
+            margin: 10px;
+        }
+
+        .model img {
+            width: 200px;
+            height: 300px;
+            object-fit: cover;
+            transition: filter 0.3s;
+        }
+
+        .model img:hover {
+            filter: blur(4px);
+        }
+
+        .model-info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .model:hover .model-info {
+            display: block;
+        }
+
+        .models {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="{{ url_for('static', filename='image.jpg') }}" alt="Your Image">
-        <button class="buy-button">Buy</button>
+    <div class="city-selection active">
+        <h1>Select Your City</h1>
+        <div class="cities">
+            <button class="city-button" onclick="showModels('London')">London</button>
+            <button class="city-button" onclick="showModels('New York')">New York</button>
+            <button class="city-button" onclick="showModels('Warsaw')">Warsaw</button>
+            <button class="city-button" onclick="showModels('Budapest')">Budapest</button>
+        </div>
     </div>
+
+    <div class="model-catalog">
+        <h1>Model Catalog</h1>
+        <div class="models">
+            <div class="model">
+                <img src="model1.jpg" alt="Model 1">
+                <div class="model-info">
+                    <p>Name: Anna</p>
+                    <p>Height: 175 cm</p>
+                    <p>Size: S</p>
+                </div>
+            </div>
+            <div class="model">
+                <img src="model2.jpg" alt="Model 2">
+                <div class="model-info">
+                    <p>Name: Kate</p>
+                    <p>Height: 180 cm</p>
+                    <p>Size: M</p>
+                </div>
+            </div>
+            <div class="model">
+                <img src="model3.jpg" alt="Model 3">
+                <div class="model-info">
+                    <p>Name: Maria</p>
+                    <p>Height: 170 cm</p>
+                    <p>Size: XS</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModels(city) {
+            document.querySelector('.city-selection').classList.remove('active');
+            document.querySelector('.model-catalog').classList.add('active');
+            alert(`Welcome to the ${city} catalog!`);
+        }
+    </script>
 </body>
 </html>
