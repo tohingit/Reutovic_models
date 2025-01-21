@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hraymo Roulette Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .roulette-container {
+            margin: 50px auto;
+            width: 300px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .wheel {
+            border: 5px solid #333;
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .wheel::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 50%;
+            background-color: #333;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        .wheel div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(50% 50%, 100% 0, 100% 100%);
+            transform-origin: 50% 50%;
+            z-index: 0;
+        }
+        .wheel div:nth-child(even) {
+            background-color: red;
+        }
+        .wheel div:nth-child(odd) {
+            background-color: black;
+        }
+        .wheel div:nth-child(1) {
+            transform: rotate(0deg);
+        }
+        .wheel div:nth-child(2) {
+            transform: rotate(45deg);
+        }
+        .wheel div:nth-child(3) {
+            transform: rotate(90deg);
+        }
+        .wheel div:nth-child(4) {
+            transform: rotate(135deg);
+        }
+        .wheel div:nth-child(5) {
+            transform: rotate(180deg);
+        }
+        .wheel div:nth-child(6) {
+            transform: rotate(225deg);
+        }
+        .wheel div:nth-child(7) {
+            transform: rotate(270deg);
+        }
+        .wheel div:nth-child(8) {
+            transform: rotate(315deg);
+        }
+        .ball {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            transition: all 4s ease-out;
+        }
+        .spin-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .spin-btn:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Hraymo Roulette Game
+    </header>
+    <div class="roulette-container">
+        <div class="wheel" id="wheel">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div class="ball" id="ball"></div>
+        </div>
+        <button class="spin-btn" onclick="spin()">Spin</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function spin() {
+            const wheel = document.getElementById('wheel');
+            const ball = document.getElementById('ball');
+            const result = document.getElementById('result');
+            const degree = Math.floor(Math.random() * 360) + 720; // 720 to ensure at least two full spins
+            wheel.style.transition = 'transform 4s ease-out';
+            wheel.style.transform = `rotate(${degree}deg)`;
+
+            const ballDegree = degree % 360 + (45 * Math.floor(Math.random() * 8));
+            ball.style.transition = 'all 4s ease-out';
+            ball.style.transform = `translateX(-50%) rotate(${ballDegree}deg) translate(85px)`;
+
+            setTimeout(() => {
+                const normalizedDegree = degree % 360;
+                let winningSegment;
+                if (normalizedDegree < 45) {
+                    winningSegment = 'Red';
+                } else if (normalizedDegree < 90) {
+                    winningSegment = 'Black';
+                } else if (normalizedDegree < 135) {
+                    winningSegment = 'Red';
+                } else if (normalizedDegree < 180) {
+                    winningSegment = 'Black';
+                } else if (normalizedDegree < 225) {
+                    winningSegment = 'Red';
+                } else if (normalizedDegree < 270) {
+                    winningSegment = 'Black';
+                } else if (normalizedDegree < 315) {
+                    winningSegment = 'Red';
+                } else {
+                    winningSegment = 'Black';
+                }
+                result.textContent = `Result: ${winningSegment}`;
+            }, 4000); // Wait for the spin to complete
+        }
+    </script>
+</body>
+</html>
