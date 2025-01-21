@@ -3,137 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model Agency</title>
+    <title>Hraymo Roulette Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f4f4f9;
+            background-color: #f0f0f0;
         }
-
-        .city-selection, .model-catalog {
-            display: none;
-            text-align: center;
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
         }
-
-        .city-selection.active, .model-catalog.active {
-            display: block;
+        .roulette-container {
+            margin: 50px auto;
+            width: 300px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        .city-selection h1 {
-            margin-bottom: 20px;
-        }
-
-        .cities {
-            display: flex;
-            gap: 15px;
-        }
-
-        .city-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            border: 2px solid #000;
-            background-color: #fff;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .city-button:hover {
-            background-color: #000;
-            color: #fff;
-        }
-
-        .model {
-            position: relative;
-            margin: 10px;
-        }
-
-        .model img {
+        .wheel {
+            border: 5px solid #333;
+            border-radius: 50%;
             width: 200px;
-            height: 300px;
-            object-fit: cover;
-            transition: filter 0.3s;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
         }
-
-        .model img:hover {
-            filter: blur(4px);
-        }
-
-        .model-info {
+        .wheel::before {
+            content: '';
             position: absolute;
             top: 50%;
             left: 50%;
+            width: 50%;
+            height: 50%;
+            background-color: #333;
+            border-radius: 50%;
             transform: translate(-50%, -50%);
-            color: #fff;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            display: none;
-            text-align: center;
+            z-index: 1;
         }
-
-        .model:hover .model-info {
-            display: block;
+        .wheel div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(50% 50%, 100% 0, 100% 100%);
+            transform-origin: 50% 50%;
+            z-index: 0;
         }
-
-        .models {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+        .wheel div:nth-child(even) {
+            background-color: red;
+        }
+        .wheel div:nth-child(odd) {
+            background-color: black;
+        }
+        .wheel div:nth-child(1) {
+            transform: rotate(0deg);
+        }
+        .wheel div:nth-child(2) {
+            transform: rotate(45deg);
+        }
+        .wheel div:nth-child(3) {
+            transform: rotate(90deg);
+        }
+        .wheel div:nth-child(4) {
+            transform: rotate(135deg);
+        }
+        .wheel div:nth-child(5) {
+            transform: rotate(180deg);
+        }
+        .wheel div:nth-child(6) {
+            transform: rotate(225deg);
+        }
+        .wheel div:nth-child(7) {
+            transform: rotate(270deg);
+        }
+        .wheel div:nth-child(8) {
+            transform: rotate(315deg);
+        }
+        .ball {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            transition: all 4s ease-out;
+        }
+        .spin-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .spin-btn:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
-    <div class="city-selection active">
-        <h1>Select Your City</h1>
-        <div class="cities">
-            <button class="city-button" onclick="showModels('London')">London</button>
-            <button class="city-button" onclick="showModels('New York')">New York</button>
-            <button class="city-button" onclick="showModels('Warsaw')">Warsaw</button>
-            <button class="city-button" onclick="showModels('Budapest')">Budapest</button>
+    <header>
+        Hraymo Roulette Game
+    </header>
+    <div class="roulette-container">
+        <div class="wheel" id="wheel">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div class="ball" id="ball"></div>
         </div>
-    </div>
-
-    <div class="model-catalog">
-        <h1>Model Catalog</h1>
-        <div class="models">
-            <div class="model">
-                <img src="model1.jpg" alt="Model 1">
-                <div class="model-info">
-                    <p>Name: Anna</p>
-                    <p>Height: 175 cm</p>
-                    <p>Size: S</p>
-                </div>
-            </div>
-            <div class="model">
-                <img src="model2.jpg" alt="Model 2">
-                <div class="model-info">
-                    <p>Name: Kate</p>
-                    <p>Height: 180 cm</p>
-                    <p>Size: M</p>
-                </div>
-            </div>
-            <div class="model">
-                <img src="model3.jpg" alt="Model 3">
-                <div class="model-info">
-                    <p>Name: Maria</p>
-                    <p>Height: 170 cm</p>
-                    <p>Size: XS</p>
-                </div>
-            </div>
-        </div>
+        <button class="spin-btn" onclick="spin()">Spin</button>
+        <div class="result" id="result"></div>
     </div>
 
     <script>
-        function showModels(city) {
-            document.querySelector('.city-selection').classList.remove('active');
-            document.querySelector('.model-catalog').classList.add('active');
-            alert(`Welcome to the ${city} catalog!`);
+        function spin() {
+            const wheel = document.getElementById('wheel');
+            const ball = document.getElementById('ball');
+            const result = document.getElementById('result');
+            const degree = Math.floor(Math.random() * 360) + 720; // 720 to ensure at least two full spins
+            wheel.style.transition = 'transform 4s ease-out';
+            wheel.style.transform = `rotate(${degree}deg)`;
+
+            const ballDegree = degree % 360 + (45 * Math.floor(Math.random() * 8));
+            ball.style.transition = 'all 4s ease-out';
+            ball.style.transform = `translateX(-50%) rotate(${ballDegree}deg) translate(85px)`;
+
+            setTimeout(() => {
+                const normalizedDegree = degree % 360;
+                let winningSegment;
+                if (normalizedDegree < 45) {
+                    winningSegment = 'Red';
+                } else if (normalizedDegree < 90) {
+                    winningSegment = 'Black';
+                } else if (normalizedDegree < 135) {
+                    winningSegment = 'Red';
+                } else if (normalizedDegree < 180) {
+                    winningSegment = 'Black';
+                } else if (normalizedDegree < 225) {
+                    winningSegment = 'Red';
+                } else if (normalizedDegree < 270) {
+                    winningSegment = 'Black';
+                } else if (normalizedDegree < 315) {
+                    winningSegment = 'Red';
+                } else {
+                    winningSegment = 'Black';
+                }
+                result.textContent = `Result: ${winningSegment}`;
+            }, 4000); // Wait for the spin to complete
         }
     </script>
 </body>
