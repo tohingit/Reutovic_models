@@ -13,14 +13,18 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #e0f7fa;
             color: #01579b;
+            box-sizing: border-box;
         }
 
         .city-selection, .model-catalog {
             display: none;
             text-align: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .city-selection.active, .model-catalog.active {
@@ -33,17 +37,21 @@
 
         .cities {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 15px;
         }
 
         .city-button {
             padding: 10px 20px;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             border: 2px solid #01579b;
             background-color: #ffffff;
             color: #01579b;
             transition: background-color 0.3s, color 0.3s;
+            flex: 1 1 calc(45% - 10px);
+            max-width: 200px;
         }
 
         .city-button:hover {
@@ -54,11 +62,14 @@
         .model {
             position: relative;
             margin: 10px;
+            flex: 1 1 calc(100% / 3 - 20px);
+            max-width: 200px;
+            box-sizing: border-box;
         }
 
         .model img {
-            width: 200px;
-            height: 300px;
+            width: 100%;
+            height: auto;
             object-fit: cover;
             transition: filter 0.3s;
             border: 2px solid #01579b;
@@ -78,6 +89,7 @@
             padding: 10px;
             display: none;
             text-align: center;
+            box-sizing: border-box;
         }
 
         .model:hover .model-info {
@@ -88,6 +100,22 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .city-button {
+                flex: 1 1 calc(100% - 20px);
+            }
+
+            .model {
+                flex: 1 1 calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .model {
+                flex: 1 1 100%;
+            }
         }
     </style>
 </head>
